@@ -12,10 +12,8 @@ public class main {
 		fileToBoard("tests\\test1");
 		board = new Board(b);
 		board.printBoard();
-		board.printSquare(8, 2);
-		board.printRow(8);
-		board.printCol(2);
-		System.out.println(board.getAvailableInput(8, 2));
+		System.out.println(board.getAvailableInput(6, 6));
+		System.out.println(board.isThereSingleSolution(6, 6));
 	}
 	
 	public static void fileToBoard(String filename) throws FileNotFoundException, IOException{

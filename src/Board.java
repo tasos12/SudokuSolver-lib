@@ -1,8 +1,10 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
 	
 	private int board[][] = new int[9][9];
+	//private int i,j;//Iterators	
 	
 	public Board(int board[][]) {
 		for(int i=0;i<9;i++) {
@@ -57,7 +59,6 @@ public class Board {
 			for(int i=0;i<3;i++) {
 				for(int j=0;j<3;j++) {
 					numberList.remove((Integer)square[i][j]);
-					System.out.println("ok");
 				}	
 			}
 			for(int i=0;i<9;i++) {
@@ -68,9 +69,50 @@ public class Board {
 		return numberList;
 	}
 	
-	/*public boolean solve() {
+	
+	public int isThereSingleSolution(int r, int c) {
 		
-	}*/
+		ArrayList<Integer> availInput = getAvailableInput(r, c);
+		ArrayList<Integer> tempInput  = getAvailableInput(r, c);
+		
+		for(int i=0;i<9;i++) {
+			if(board[i][c] == 0 && i!=r) availInput.removeAll(getAvailableInput(i, c));
+		}
+		if(availInput.size() == 1) return availInput.get(0);
+		else {
+			System.out.println(availInput);
+			availInput = tempInput;
+		}
+		
+		for(int i=0;i<9;i++) {
+			if(board[r][i] == 0 && i!=c) availInput.removeAll(getAvailableInput(r, i));
+		}
+		if(availInput.size() == 1) return availInput.get(0);
+		else {
+			System.out.println(availInput);
+			availInput = tempInput;
+		}
+		
+		int row = (int)Math.floor((r/3))*3;
+		int col = (int)Math.floor((c/3))*3;
+		int tempRow, tempCol;
+		
+		for(int i=0;i<3;i++)
+			for(int j=0;j<3;j++) {
+				tempRow = row+i;
+				tempCol = col+j;
+				if(board[tempRow][tempCol] == 0 && tempRow != r && tempCol != c) 
+					availInput.removeAll(getAvailableInput(tempRow, tempCol));
+			}		
+		if(availInput.size() == 1) return availInput.get(0);
+		else {
+			System.out.println(availInput);
+			availInput = tempInput;
+		}
+		
+		return 0;
+	}
+	
 	
 	public void printBoard() {
 		for(int i=0;i<9;i++) {
