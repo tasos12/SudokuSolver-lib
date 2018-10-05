@@ -9,11 +9,13 @@ public class main {
 	static Board board;
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
-		fileToBoard("tests\\test1");
+		fileToBoard("tests\\expert1");
 		board = new Board(b);
-		board.printBoard();
-		System.out.println(board.getAvailableInput(6, 6));
-		System.out.println(board.isThereSingleSolution(6, 6));
+		//board.printBoard();
+		//board.printSquare(7, 4);
+		//System.out.println(board.getAvailableInput(7, 4));
+		//System.out.println(board.isThereSingleSolution(1, 2));
+		board.solve();
 	}
 	
 	public static void fileToBoard(String filename) throws FileNotFoundException, IOException{
