@@ -4,11 +4,13 @@ import java.util.List;
 public class Board {
 	
 	private int board[][] = new int[9][9];
-	//private int i,j;//Iterators	
+	private ArrayList<Block> emptyBlocks;
 	
 	public Board(int board[][]) {
+		emptyBlocks = new ArrayList<Block>();
 		for(int i=0;i<9;i++) {
 			for(int j=0;j<9;j++) {
+				if(board[i][j] == 0) emptyBlocks.add(new Block(i,j));
 				this.board[i][j] = board[i][j];
 			}
 		}
@@ -49,7 +51,7 @@ public class Board {
 	public ArrayList<Integer> getAvailableInput(int r, int c) {
 		ArrayList<Integer> numberList = new ArrayList<Integer>();
 		if(getBox(r, c) == 0) {
-			for(int i=0;i<9;i++) {
+			for(int i=1;i<=9;i++) {
 				numberList.add(i);
 			}
 			int[][] square = getSquare(r, c);
@@ -75,12 +77,12 @@ public class Board {
 		ArrayList<Integer> availInput = getAvailableInput(r, c);
 		ArrayList<Integer> tempInput  = getAvailableInput(r, c);
 		
+		if(availInput.size() == 1) return availInput.get(0);
 		for(int i=0;i<9;i++) {
 			if(board[i][c] == 0 && i!=r) availInput.removeAll(getAvailableInput(i, c));
 		}
 		if(availInput.size() == 1) return availInput.get(0);
 		else {
-			System.out.println(availInput);
 			availInput = tempInput;
 		}
 		
@@ -89,7 +91,6 @@ public class Board {
 		}
 		if(availInput.size() == 1) return availInput.get(0);
 		else {
-			System.out.println(availInput);
 			availInput = tempInput;
 		}
 		
@@ -106,11 +107,37 @@ public class Board {
 			}		
 		if(availInput.size() == 1) return availInput.get(0);
 		else {
-			System.out.println(availInput);
 			availInput = tempInput;
 		}
 		
+		//if(availInput.size() == 1) return availInput.get(0);
+		
 		return 0;
+	}
+	
+	public void solve() {
+		boolean break_flag = true;
+		ArrayList<Block> toRemove = new ArrayList<Block>();
+		
+		while(break_flag) {
+			break_flag = false;
+			if(emptyBlocks.isEmpty()) break;
+			else {
+				for(Block b: emptyBlocks) {
+					int row = b.row();
+					int col = b.col();
+					int sol = isThereSingleSolution(row, col);		
+					if(sol != 0) {
+						board[row][col] = sol;
+						toRemove.add(b);
+						break_flag = true;
+						System.out.println();
+						printBoard();
+					}
+				}
+				emptyBlocks.removeAll(toRemove);
+			}
+		}
 	}
 	
 	
